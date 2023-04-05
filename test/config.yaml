@@ -1,0 +1,44 @@
+#
+# This is an example summit project build config
+# 
+---
+
+name: testing-image
+
+packages:
+  - linux-firmware-none
+  - linux-lts
+  - util-linux
+  - s6
+
+tasks:
+  - name: Enable mdev
+    chroot: rc-update add mdev boot
+  - name: Apply configuration
+    copy:
+      src: overlay/etc
+      dest: /
+  - name: Set hostname to localhost
+    chroot: hostname localhost
+
+# Let's not build a custom kernel just yet
+# kernel: 
+#   sources: ""
+#   makecfg: olddefconfig
+#   targets:
+#     - install
+#     - modules
+#     - modules_install
+
+images:
+  - kernel:
+      from: /mnt/target/boot/vmlinuz-lts
+      dest: kernel.img
+  - initramfs:
+      compression: zstd --fast
+      dest: initramfs.img
+  - tar:
+      dest: image.tar 
+  - erofs:
+      dest: image.erofs
+      compression: lz4

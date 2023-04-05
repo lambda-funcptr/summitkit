@@ -1,0 +1,13 @@
+#!/bin/sh
+if ! [ -d /config ] || ! [ -e /config/config.yaml ]; then
+    echo "!!! No valid config found, please confirm you've mapped a valid directory to /config!"
+    exit 1
+fi
+
+if ! [ -d /output ]; then
+    echo "!!! No valid output directory found, please confirm you've mapped a valid directory to /output!"
+    exit 1
+fi
+
+cd /config
+chibi-scheme -I $(dirname $0) -r $(dirname $0)/summit.scm
