@@ -37,6 +37,15 @@
 				(list (string-append "/output/" (cdr erofs-dest)))
 				(list "/mnt/target")))))
 
+(define (export-uki! imgcfg)
+	(let*
+		( (uki-dest (assq 'dest (cdr imgcfg)))
+			(uki-cmdline (assq 'cmdline (cdr imgcfg)))
+      (uki-kernel (assq 'kernel (cdr imgcfg)))
+      (uki-initramfs (assq 'initramfs (cdr imgcfg))))
+		(system?
+			(append '("mkuki" "-c" uki-cmdline (string-append "cd /mnt/target; /mkuki -o /output/" (cdr uki-dest) " -k kernel -i initramfs"))))))
+
 (define (run-export-image type-string image-process imagecfg)
 	(begin
 		(display (string-append ">>> Exporting " type-string)) (newline)
@@ -53,6 +62,8 @@
 			(run-export-image "tar" export-tar! imagecfg))
 		((assq 'erofs imagecfg)
 			(run-export-image "erofs" export-erofs! imagecfg))
+		((assq 'uki imagecfg)
+			((run-export-image "uki" export-uki! imagecfg)))
 		(else
 			(begin
 				(display "!!! Invalid image config detected: ") (newline)
