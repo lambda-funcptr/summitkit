@@ -5,6 +5,7 @@
     (srfi 1)
     (srfi 2)
     (srfi 130)
+    (chibi filesystem)
   	(chibi process))
   (include
     "image.scm")
