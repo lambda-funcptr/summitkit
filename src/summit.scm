@@ -26,6 +26,8 @@
 	(let* 
 		( (config (read-config)) 
 		 (image-name (cdr (assq 'name config))))
+		(display ">>> Updating/initalizing apk cache...")
+		(system '(apk update))
 		(display (string-append ">>> Building image [" image-name "]")) (newline)
 		(unless (build! config)
 			(display (string-append "!!! Failed to build image [" image-name "]!")) (newline)

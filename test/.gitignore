@@ -1,3 +1,5 @@
+.pkgcache
 *.img
 *.tar
 *.erofs
+*.efi
