@@ -42,3 +42,8 @@ images:
   - erofs:
       dest: image.erofs
       compression: lz4
+  - uki:
+      kernel: kernel.img
+      cmdline: /config/cmdline
+      initramfs: ["initramfs.img"]
+      dest: uki.efi
