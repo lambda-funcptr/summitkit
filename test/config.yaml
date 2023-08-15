@@ -9,7 +9,6 @@ packages:
   - linux-firmware-none
   - linux-lts
   - util-linux
-  - s6
 
 tasks:
   - name: Enable mdev
@@ -35,7 +34,7 @@ images:
       from: /mnt/target/boot/vmlinuz-lts
       dest: kernel.img
   - initramfs:
-      compression: zstd --fast
+#      compression: lz4 -
       dest: initramfs.img
   - tar:
       dest: image.tar 

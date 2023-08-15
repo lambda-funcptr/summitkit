@@ -1,1 +1,1 @@
-rdinit=/sbin/init rootfstype=ramfs
+rdinit=/sbin/init rootfstype=ramfs console=ttyS0,115200
