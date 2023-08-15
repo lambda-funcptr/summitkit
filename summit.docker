@@ -1,7 +1,7 @@
 FROM alpine:edge
 RUN grep 'main$' /etc/apk/repositories | head -n 1 | sed 's/main$/testing/' >> /etc/apk/repositories
 RUN apk update && apk upgrade && apk add chibi-scheme cpio erofs-utils f2fs-tools rsync yq zstd \
-    gcc flex bison elfutils efi-mkuki
+    gcc flex bison elfutils efi-mkuki gummiboot intel-ucode amd-ucode
 COPY src /opt/bin
 VOLUME [ "/mnt/target" ]
 ENTRYPOINT [ "/opt/bin/summit" ]
