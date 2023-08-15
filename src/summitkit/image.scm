@@ -15,7 +15,7 @@
       (dest (assq 'dest (cdr imagecfg)))
 			(from (assq 'from (cdr imagecfg))))
     (system? (list "sh" "-c" 
-      (string-append "cd /mnt/target; find . -print0 | cpio --null --create --verbose --format=newc" 
+      (string-append "cd /mnt/target; find . -not -path ./boot -print0 | cpio --null --create --verbose --format=newc"
         (if compression (string-append " | " (cdr compression)) "")
         " > /output/" (if dest (cdr dest) "initramfs.img"))))))
 
