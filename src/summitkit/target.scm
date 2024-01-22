@@ -15,7 +15,7 @@
 		(apk-chroot! (map string->symbol initpkgs))))
 
 (define (setup-target! config)
-	(let 
+	(let
 		( (pkgcfg (assq 'packages config)))
 		(and-let* ()
 			(init-rootfs!)
@@ -23,11 +23,11 @@
 				(install-initpkgs! (vector->list (cdr pkgcfg)))))))
 
 (define (run-chroot! taskcfg)
-	(system? 
+	(system?
 		(append '(chroot /mnt/target sh -c )
 			(list (cdr (assq 'chroot taskcfg))))))
 
-(define (run-copy! taskcfg) 
+(define (run-copy! taskcfg)
 	(let*
 		( (copy-args (assq 'copy taskcfg))
 			(src (cdr (assq 'src copy-args)))
@@ -35,13 +35,13 @@
 		(system?
 			(append '(cp -avr)
 				(list src
-					(string-append 
+					(string-append
 						(if (string-prefix? "/" dest) "/mnt/target" "/mnt/target/") dest))))))
 
 (define (task task-type task-process taskcfg)
 	(begin
 		(display
-			(string-append "=== TASK [" task-type "]" 
+			(string-append "=== TASK [" task-type "]"
 				(if (assq 'name taskcfg) (string-append " : " (cdr (assq 'name taskcfg)))) ""))
 		(newline)
 		(task-process taskcfg)))

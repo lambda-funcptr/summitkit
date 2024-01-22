@@ -1,5 +1,5 @@
 (define-library (summitkit image)
-  (import 
+  (import
     (scheme base)
     (scheme r5rs)
     (srfi 1)

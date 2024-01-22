@@ -1,16 +1,16 @@
 (define (export-kernel! imagecfg)
-  (let* 
+  (let*
     ( (kernel-from (assq 'from (cdr imagecfg)))
       (kernel-dest (assq 'dest (cdr imagecfg))))
     (cond
       (kernel-from
-        (system? (list "cp" "-v" (cdr kernel-from) 
-          (string-append "/output/" 
+        (system? (list "cp" "-v" (cdr kernel-from)
+          (string-append "/output/"
 						(if kernel-dest (cdr kernel-dest) "kernel.img")))))
       (else #f))))
 
 (define (export-initramfs! imagecfg)
-  (let* 
+  (let*
     ( (compression (assq 'compression (cdr imagecfg)))
       (dest (assq 'dest (cdr imagecfg)))
 			(from (assq 'from (cdr imagecfg))))
@@ -24,16 +24,16 @@
   (let*
     ( (tar-dest (assq 'dest (cdr imagecfg)))
       (tar-args (assq 'args (cdr imagecfg))))
-    (system? 
+    (system?
       (append '("tar") (if tar-args (vector->list (cdr tar-args)) '())
         (list "-C" "/mnt/target" "-vcf" (string-append "/output/" (cdr tar-dest)) ".")))))
 
-(define (export-erofs! imagecfg) 
+(define (export-erofs! imagecfg)
 	(let*
 		( (erofs-dest (assq 'dest (cdr imagecfg)))
 			(erofs-compression (assq 'compression (cdr imagecfg))))
 		(system?
-			(append '("mkfs.erofs") 
+			(append '("mkfs.erofs")
 				(if erofs-compression (list "-z" (cdr erofs-compression)) '())
 				(list (string-append "/output/" (cdr erofs-dest)))
 				(list "/mnt/target")))))
@@ -52,7 +52,7 @@
 (define (run-export-image type-string image-process imagecfg)
 	(begin
 		(display (string-append ">>> Exporting " type-string)) (newline)
-		(if (image-process (car imagecfg)) #t 
+		(if (image-process (car imagecfg)) #t
 			(begin (display (string-append "!!! Failed to export " type-string)) (newline) #f))))
 
 (define (export-image! imagecfg) (begin
@@ -72,10 +72,10 @@
 				(display "!!! Invalid image config detected: ") (newline)
 				(display imagecfg) (newline) #f)))))
 
-(define (write-images! config) 
-	(and-let* 
+(define (write-images! config)
+	(and-let*
 		( (images-cfg (assq 'images config))
 			(image-list (vector->list (cdr images-cfg)))
 		(display ">>> Writing out images...") (newline)
-		(fold 
+		(fold
 			(lambda (x y) (and (export-image! x) y)) #t image-list))))
