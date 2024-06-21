@@ -1,8 +1,10 @@
 FROM alpine:edge
 RUN grep 'main$' /etc/apk/repositories | head -n 1 | sed 's/main$/testing/' >> /etc/apk/repositories
 RUN apk update && apk upgrade && apk add chibi-scheme cpio erofs-utils f2fs-tools rsync yq zstd \
-    gcc flex bison elfutils efi-mkuki gummiboot intel-ucode amd-ucode lz4 mkinitfs
+    gcc flex bison elfutils efi-mkuki gummiboot lz4 mkinitfs
 RUN disable_trigger=yes >> /etc/mkinitfs/mkinitfs.conf
 COPY src /opt/bin
+ARG TARGETARCH
+RUN sh "/opt/bin/platform/$TARGETARCH.sh"
 VOLUME [ "/mnt/target" ]
 ENTRYPOINT [ "/opt/bin/summit" ]
